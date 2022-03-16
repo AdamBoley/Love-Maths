@@ -14,25 +14,35 @@ document.addEventListener("DOMContentLoaded", function() {//listens for the DOM 
 
             else { //triggers if any other button is clicked
                 let gameType = this.getAttribute("data-type"); //declares a new variable that has a value of the data-type of the button clicked
-                alert(`You clicked${gameType}`)//alerts user
+                runGame(gameType); //calls the runGame function
             }
         })
 
     }
+
+    runGame("addition");
     
 }
 
 )
 
+/**
+ * The main gane loop, which is called when the script is first loaded
+ * and again after the user's answer has loaded
+ * 
+ */
+function runGame(gameType) {//gameType is the data-type attribute value of the buttons
 
-function runGame() {
+    let number1 = Math.round(Math.random() * 50) + 1; //generates a random integer between 1 and 50. The +1 means that the variable can never be 0. Math.round is conventional rounding, so 51 could be generated
+    let number2 = Math.round(Math.random() * 50) + 1; //generates a random integer between 1 and 50. The +1 means that the variable can never be 0
 
-    let number1 = math.round(math.random() * 50) + 1; //generates a random integer between 1 and 50. The +1 means that the variable can never be 0. Math.round is conventional rounding, so 51 could be generated
-    let number2 = math.round(math.random() * 50) + 1; //generates a random integer between 1 and 50. The +1 means that the variable can never be 0
-
-    console.log(number1);
-    console.log(number2);
-
+    if(gameType === "addition") {//Checks the value of gameType, and calls the displayAdditionQuestion function inside the runGame function if the addition button was clicked
+        displayAdditionQuestion(number1, number2); //calls function, tells it to accept the two random numbers
+    }
+    else {
+        alert(`unknown game type: ${gameType}`); //This shouldn't happen in the final build, but is included for completeness' sake
+        throw `unknown game type: ${gameType}. Aborting!`; //the throw keyword aborts the function and logs the message for debugging purposes
+    }
 }
 
 function checkAnswer() {
@@ -51,7 +61,12 @@ function incrementIncorrectAnswer() {
 
 }
 
-function displayAdditionQuestion() {
+function displayAdditionQuestion(operand1, operand2) { //tells the function that it should accept two parameters called operand1 and operand2. 
+    //When called via the runGame function, operand1 and operand2 are replaced(?) by the two randomly generated numbers 
+
+    document.getElementById('operand-1').textContent = operand1; //I think this is like a variable, but in reverse, it is taking operand1 and placing it into the HTML document for the user to see what the question is
+    document.getElementById('operand-2').textContent = operand2; 
+    document.getElementById('operator').textContent = "+"; //the same happens here - when the function is called, hard-sets the operator span in the HTML document to +
 
 }
 
