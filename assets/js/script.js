@@ -4,6 +4,7 @@
 //future ideas: - 
 //see if the large first function can be cut down by splitting into smaller functions
 //create some sort of random number generator that randomises the next question
+//define new number variables for the multiplication and division questions, so that the operands and resultant answers aren't huge
 
 document.addEventListener("DOMContentLoaded", function() {//listens for the DOM Content Loaded event, immediately executes this function, rather than defining the function elsewhere and invoking it here
 //may try to see if I can cut this down and abstract out child functions
@@ -42,6 +43,15 @@ function runGame(gameType) {//gameType is the data-type attribute value of the b
 
     if(gameType === "addition") {//Checks the value of gameType, and calls the displayAdditionQuestion function inside the runGame function if the addition button was clicked
         displayAdditionQuestion(number1, number2); //calls function, tells it to accept the two random numbers
+    }
+    else if(gameType === "subtract") {
+        displaySubtractQuestion(number1, number2);
+    }
+    else if(gameType === "multiply") {
+        displayMultiplyQuestion(number1, number2);
+    }
+    else if(gameType === "division") {
+        displayDivisionQuestion(number1, number2);
     }
     else {
         alert(`unknown game type: ${gameType}`); //This shouldn't happen in the final build, but is included for completeness' sake
@@ -86,6 +96,15 @@ function calculateCorrectAnswer() {
     if(operator === "+") {
         return [operand1 + operand2, "addition"]; //square brackets, returns an array. The first element is the result of the calculation, the second element is the game type we want to run next
     }
+    else if(operator === "-") {
+        return [operand1 - operand2, "subtract"];
+    }
+    else if(operator === "x") {
+        return [operand1 * operand2, "multiply"];
+    }
+    else if(operator === "/") {
+        return [operand1 / operand2, "division"];
+    }
     else {
         alert(`Unimplemented operator ${operator}`); //should not happen in the final version
         throw `Unimplemented operator ${operator}, aborting`;
@@ -118,15 +137,27 @@ function displayAdditionQuestion(operand1, operand2) { //tells the function that
 
 }
 
-function displaySubtractQuestion() {
+function displaySubtractQuestion(operand1, operand2) {
+
+    document.getElementById('operand-1').textContent = operand1 > operand2 ? operand1 : operand2; //ternary operator, used to ensuure that the first calculation term is always larger than the second
+    document.getElementById('operand-2').textContent = operand2 < operand1 ? operand2 : operand1; 
+    document.getElementById('operator').textContent = "-"; //the same happens here - when the function is called, hard-sets the operator span in the HTML document to -
+    //the ternary operator conditions should ensure that a question with a negative answer is displayed 
+}
+
+function displayMultiplyQuestion(operand1, operand2) {
+
+    document.getElementById('operand-1').textContent = operand1; //I think this is like a variable, but in reverse, it is taking operand1 and placing it into the HTML document for the user to see what the question is
+    document.getElementById('operand-2').textContent = operand2; 
+    document.getElementById('operator').textContent = "x"; //the same happens here - when the function is called, hard-sets the operator span in the HTML document to *
 
 }
 
-function displayMultiplyQuestion() {
+function displayDivisionQuestion(operand1, operand2) {
 
-}
-
-function displayMultiplyQuestion() {
+    document.getElementById('operand-1').textContent = operand1; //I think this is like a variable, but in reverse, it is taking operand1 and placing it into the HTML document for the user to see what the question is
+    document.getElementById('operand-2').textContent = operand2; 
+    document.getElementById('operator').textContent = "/"; //the same happens here - when the function is called, hard-sets the operator span in the HTML document to /
 
 }
 
