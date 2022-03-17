@@ -25,11 +25,17 @@ document.addEventListener("DOMContentLoaded", function() {//listens for the DOM 
 
     }
 
-    runGame("addition");
-    
-}
+    document.getElementById('answer-box').addEventListener("keydown", function(event) { //adds an event listener that listens for the key press event
 
-)
+        if (event.key === "Enter") { //checks whether the key that was pressed was the Enter key
+            checkAnswer(); //if so, calls the checkAnswer function, so that the user can press the Enter key to submit their answer rather than clicking the submit button
+        }
+
+    })
+
+    runGame("addition"); //sets the default game type to addition
+    
+})
 
 /**
  * The main gane loop, which is called when the script is first loaded
@@ -37,6 +43,9 @@ document.addEventListener("DOMContentLoaded", function() {//listens for the DOM 
  * 
  */
 function runGame(gameType) {//gameType is the data-type attribute value of the buttons
+
+    document.getElementById('answer-box').value = ''; //empties the answer box so that the user doesn't have to manually delete the value they entered for the previous question
+    document.getElementById('answer-box').focus();//uses the focus method to set the answer-box to the active element, so that the user doesn't have to select the answer box to begin typing
 
     let number1 = Math.round(Math.random() * 50) + 1; //generates a random integer between 1 and 50. The +1 means that the variable can never be 0. Math.round is conventional rounding, so 51 could be generated
     let number2 = Math.round(Math.random() * 50) + 1; //generates a random integer between 1 and 50. The +1 means that the variable can never be 0
