@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {//listens for the DOM 
 
         button.addEventListener("click", function() { //again, declares an event listener, and directly calls a function
             if (this.getAttribute("data-type") === "submit") { //checks if the value of the data-type attribute of the button is submit
-                alert("You clicked submit"); //alerts the user that they have clicked submit
+                checkAnswer();
             }
 
             else { //triggers if any other button is clicked
@@ -45,12 +45,45 @@ function runGame(gameType) {//gameType is the data-type attribute value of the b
     }
 }
 
+/**
+ * Checks answer against the first element of the returned calculateCorrectAnswer array
+ */
 function checkAnswer() {
 
-}
+    let userAnswer = parseInt(document.getElementById('answer-box').value); //gets the value of the user's answer entered into the answer box
+    let calculatedAnswer = calculateCorrectAnswer(); //calls the calculateCorrectAnswer function, assigns value as the array returned from that function
+    let isCorrect = userAnswer === calculatedAnswer[0]; //calculatedAnswer is an array, but we're indexing to find the first element, which is the result of the calculation
+    // note use of the strictly equal comparison, so the isCorrect variable returns a boolean true/false value
 
+    if(isCorrect === true) { //could be shorted to isCorrect, as the IF part of the IF/ELSE statement checks for boolean truth
+        alert("You got the right answer!");
+    }
+    else { //triggers if isCorrect returns as false
+        alert(`You got the wrong answer. You answered ${userAnswer}. The correct answer is ${calculatedAnswer[0]}.`)
+    }
+
+    runGame(calculatedAnswer[1]); //calls the runGame function using the second element of the calculatedAnswer array, the game type
+
+};
+
+/**
+ * Gets the operands and the operator - the numbers and the sign - directly from the DOM and returns the correct answer
+ * 
+ */
 function calculateCorrectAnswer() {
 
+    let operand1 = parseInt(document.getElementById('operand-1').innerText);//the parseInt method converts a string to an integer. Makes use of JS's type-conversion ability
+    let operand2 = parseInt(document.getElementById('operand-2').innerText);
+    let operator = document.getElementById('operator').innerText;
+    //these declarations retrieve the values of the operator and the operands for use within the function
+
+    if(operator === "+") {
+        return [operand1 + operand2, "addition"]; //square brackets, returns an array. The first element is the result of the calculation, the second element is the game type we want to run next
+    }
+    else {
+        alert(`Unimplemented operator ${operator}`); //should not happen in the final version
+        throw `Unimplemented operator ${operator}, aborting`;
+    }
 }
 
 function incrementCorrectAnswer() {
