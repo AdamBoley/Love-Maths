@@ -47,8 +47,8 @@ function runGame(gameType) {//gameType is the data-type attribute value of the b
     document.getElementById('answer-box').value = ''; //empties the answer box so that the user doesn't have to manually delete the value they entered for the previous question
     document.getElementById('answer-box').focus();//uses the focus method to set the answer-box to the active element, so that the user doesn't have to select the answer box to begin typing
 
-    let number1 = Math.round(Math.random() * 50) + 1; //generates a random integer between 1 and 50. The +1 means that the variable can never be 0. Math.round is conventional rounding, so 51 could be generated
-    let number2 = Math.round(Math.random() * 50) + 1; //generates a random integer between 1 and 50. The +1 means that the variable can never be 0
+    let number1 = Math.round(Math.random() * 25) + 1; //generates a random integer between 1 and 25. The +1 means that the variable can never be 0. Math.round is conventional rounding, so 51 could be generated
+    let number2 = Math.round(Math.random() * 25) + 1; //generates a random integer between 1 and 25. The +1 means that the variable can never be 0
 
     if(gameType === "addition") {//Checks the value of gameType, and calls the displayAdditionQuestion function inside the runGame function if the addition button was clicked
         displayAdditionQuestion(number1, number2); //calls function, tells it to accept the two random numbers
@@ -112,7 +112,7 @@ function calculateCorrectAnswer() {
         return [operand1 * operand2, "multiply"];
     }
     else if(operator === "/") {
-        return [operand1 / operand2, "division"];
+        return [(operand1 / operand2), "division"];//uses Math.round to round the calculated result to the nearest whole number, so that the use doesn't have to enter a long floating point answer
     }
     else {
         alert(`Unimplemented operator ${operator}`); //should not happen in the final version
@@ -164,15 +164,8 @@ function displayMultiplyQuestion(operand1, operand2) {
 
 function displayDivisionQuestion(operand1, operand2) {
 
-    document.getElementById('operand-1').textContent = operand1; //I think this is like a variable, but in reverse, it is taking operand1 and placing it into the HTML document for the user to see what the question is
+    document.getElementById('operand-1').textContent = operand1 * operand2; 
     document.getElementById('operand-2').textContent = operand2; 
     document.getElementById('operator').textContent = "/"; //the same happens here - when the function is called, hard-sets the operator span in the HTML document to /
 
 }
-
-
-
-
-
-
-

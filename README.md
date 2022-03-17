@@ -1,108 +1,46 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+to run server - python3 -m http.server
 
-Welcome AdamBoley,
+JS logic flow:
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+When page loads, runs the addition game by default
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **September 1, 2021**
+Can select another game type by clicking a button
 
-## Gitpod Reminders
+runGame function then generates two random numbers between 1 and 25 called number1 and number2
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+Then checks the gameType - addition, subtract, multiply and divide
 
-`python3 -m http.server`
+Depending on the gameType - invokes 1 of 4 functions to display the question, and passes the two random numbers as operand1 and operand2
 
-A blue button should appear to click: _Make Public_,
+These display functions set the numbers displayed in the HTML page variously:
+in the case of the addition and multiplication games, the functions set the HTML content unchanged - operand1 and operand2 === number1 and number2
+In the case of the subtract game, a ternary operator sets operand 1 as greater than operand 2, so that the result is always positive
+In the case of the division game, the first number is the product of the multiplication of operand1 and operand2, the two random numbers, and the second number is === to number2
+This ensures that the answer to the division question is always a whole number. 
+(An alternative is to supply operand1 and operand2 unchanged, but to use Math.round on the checkAnswer function)
 
-Another blue button should appear to click: _Open Browser_.
+The question is hence displayed to the user for them to answer, and prompts an input
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+Once they enter an answer and either press the Submit button or hit their Enter key, the checkAnswer function is invoked
 
-A blue button should appear to click: _Make Public_,
+the checkAnswer function invokes the calculateCorrectAnswer function, and assigns the returned value to a variable called calculatedAnswer
 
-Another blue button should appear to click: _Open Browser_.
+The calculateCorrectAnswer function reads the HTML document and retrieves the values of the operands set by the displayQuestion functions
+the function then calculates the correct answer of the equation
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+Once the correct answer has been calculated by the calculateCorrectAnswer function, the checkAnswer function resumes
 
-To log into the Heroku toolbelt CLI:
+The checkAnswer function checks whether the users answer is equal to the output of the calculateCorrectAnswer
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+If the users answer matches the calculated answer, an alert activates, and the incrementCorrectAnswer function is invoked
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+If the users answer does not match the calculated answer, an alert activates displaying the users answer and the correct answer, and the incrementIncorrectAnswer function is invoked
 
-------
+The increment functions work similarly and retrieve the current numbers of the correct and incorrect answers, increment them by 1 and then update the HTML document
 
-## Release History
+The checkAnswer function then resumes and resets the game by invoking the runGame function again, using the same game type as before - i.e an addition game is always followed by an addition game, etc
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
 
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
 
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
-
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
-
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
-
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
-
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
-
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
-
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
-
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
-
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
-
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
-
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
-
-------
-
-## FAQ about the uptime script
-
-**Why have you added this script?**
-
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
-
-**How will this affect me?**
-
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
-
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
-
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
-
-**So….?**
-
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
-
-**Can I opt out?**
-
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
-
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
-
-**Anything more?**
-
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
-
----
-
-Happy coding!
