@@ -1,6 +1,10 @@
 //wait for the DOm to load before running the game
 //get button elements and add event listeners to them
 
+//future ideas: - 
+//see if the large first function can be cut down by splitting into smaller functions
+//create some sort of random number generator that randomises the next question
+
 document.addEventListener("DOMContentLoaded", function() {//listens for the DOM Content Loaded event, immediately executes this function, rather than defining the function elsewhere and invoking it here
 //may try to see if I can cut this down and abstract out child functions
     let buttons = document.getElementsByTagName("button"); //generates an array of the button elements, which is 5 array elements long
@@ -9,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {//listens for the DOM 
 
         button.addEventListener("click", function() { //again, declares an event listener, and directly calls a function
             if (this.getAttribute("data-type") === "submit") { //checks if the value of the data-type attribute of the button is submit
-                checkAnswer();
+                checkAnswer(); //calls the checkAnswer function
             }
 
             else { //triggers if any other button is clicked
@@ -57,9 +61,11 @@ function checkAnswer() {
 
     if(isCorrect === true) { //could be shorted to isCorrect, as the IF part of the IF/ELSE statement checks for boolean truth
         alert("You got the right answer!");
+        incrementCorrectAnswer(); //calls the incrementCorrectAnswer function, adds 1 to the correct answer count
     }
     else { //triggers if isCorrect returns as false
-        alert(`You got the wrong answer. You answered ${userAnswer}. The correct answer is ${calculatedAnswer[0]}.`)
+        alert(`You got the wrong answer. You answered ${userAnswer}. The correct answer is ${calculatedAnswer[0]}.`);
+        incrementIncorrectAnswer(); //calls the incremenetIncorrectAnswer function, adds 1 to the incorrect answer count
     }
 
     runGame(calculatedAnswer[1]); //calls the runGame function using the second element of the calculatedAnswer array, the game type
@@ -74,7 +80,7 @@ function calculateCorrectAnswer() {
 
     let operand1 = parseInt(document.getElementById('operand-1').innerText);//the parseInt method converts a string to an integer. Makes use of JS's type-conversion ability
     let operand2 = parseInt(document.getElementById('operand-2').innerText);
-    let operator = document.getElementById('operator').innerText;
+    let operator = document.getElementById('operator').innerText; //no need to parseInt since the operator is a mathematical operator
     //these declarations retrieve the values of the operator and the operands for use within the function
 
     if(operator === "+") {
@@ -86,11 +92,20 @@ function calculateCorrectAnswer() {
     }
 }
 
+/**
+ * Gets current score from DOM and increments it by 1, then returns that incremented value
+ */
 function incrementCorrectAnswer() {
+
+    let oldCorrectAnswer = parseInt(document.getElementById('correct').innerText); //can also use the textContent method, since it and innerText are largely interchangeable
+    document.getElementById('correct').innerText = ++oldCorrectAnswer; // can also use oldCorrectAnswer + 1
 
 }
 
 function incrementIncorrectAnswer() {
+
+    let oldIncorrectAnswer = parseInt(document.getElementById('incorrect').innerText); //can also use the textContent method, since it and innerText are largely interchangeable
+    document.getElementById('incorrect').innerText = ++oldIncorrectAnswer; // can also use oldCorrectAnswer + 1
 
 }
 
